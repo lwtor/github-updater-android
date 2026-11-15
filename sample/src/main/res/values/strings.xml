@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Updater Sample</string>
+    <string name="version_format">当前版本 %1$s (code %2$d)</string>
+    <string name="check_update">检查更新</string>
+    <string name="download">下载</string>
+    <string name="install">安装</string>
+    <string name="status_idle">尚未检查更新</string>
+    <string name="log_label">最近一次检查结果</string>
+</resources>
