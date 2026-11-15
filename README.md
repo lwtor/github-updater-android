@@ -141,6 +141,10 @@ FileProvider backed by `@xml/updater_file_paths`.
 `POST_NOTIFICATIONS` must still be granted at runtime on API 33+ — until it is, the download runs
 but its progress notification is hidden.
 
+## Integrate with an AI assistant
+
+[`docs/integration-prompt.md`](docs/integration-prompt.md) is a self-contained prompt (Chinese) to hand to a coding model: prerequisites and how to obtain the coordinate, the `UpdaterConfig` fields, the manifest-merge contract (declare nothing — the library supplies permissions, service and provider), the `check → download → install` sequence, error types, the release-side contract, and a verification checklist with a symptom-to-cause table.
+
 ## Sample
 
 `:sample` is a classic-Views demo (`Updater Sample`, applicationId
