@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Everything a consumer needs to run a self-update, so the app declares none of it:
+
+  * INTERNET / ACCESS_NETWORK_STATE — the GitHub API call and the APK transfer.
+  * REQUEST_INSTALL_PACKAGES — lets the system installer show the "install unknown app"
+    confirmation; it is a normal permission, so there is no runtime prompt and the user still
+    approves each install individually.
+  * FOREGROUND_SERVICE + FOREGROUND_SERVICE_DATA_SYNC — the download worker is a foreground
+    service, and from API 34 it must declare the type it runs under.
+  * POST_NOTIFICATIONS — declared here and granted at runtime; until the user allows it the
+    download still runs, only its progress is hidden.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application>
+        <!-- WorkManager owns this service; API 34+ requires the foreground service type on the
+             merged service entry, and `merge` lets a consumer that already declared it keep its
+             own attributes. -->
+        <service
+            android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:foregroundServiceType="dataSync"
+            tools:node="merge" />
+
+        <!-- Exposes the downloaded APK to the system installer. The authority must match
+             UpdaterConfig.fileProviderAuthority, whose default derivation is
+             `${applicationId}.updater`. -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.updater"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/updater_file_paths" />
+        </provider>
+    </application>
+</manifest>

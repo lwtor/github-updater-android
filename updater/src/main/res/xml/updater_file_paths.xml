@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The downloads live in `cacheDir/updater/<scope>/`, so a single `updater/` cache root covers
+  every scope. Keep this in sync with `updaterCacheDir()` — the FileProvider can only expose what
+  this file lists.
+-->
+<paths>
+    <cache-path
+        name="updater_downloads"
+        path="updater/" />
+</paths>
